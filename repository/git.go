@@ -124,5 +124,4 @@ func (g *GitRepository) SetRepoURL(repoURL string) error {
 	cmd := exec.Command("git", "remote", "set-url", "origin", repoURL)
 	cmd.Dir = GameSaveRoot
 	return cmd.Run()
-	return nil
 }
