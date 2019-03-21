@@ -1,3 +1,4 @@
 gamesave
 *.in
-
+test_*
+.gamesave.json

@@ -49,11 +49,7 @@ func (s *Service) LoadGame() error {
 	if err != nil {
 		return err
 	}
-	err = s.GitRepository.Pull(gameName)
-	if err != nil {
-		return err
-	}
-	return nil
+	return s.GitRepository.Pull(gameName)
 }
 
 // LoadGameSave load game's save data by copying the save data
@@ -85,11 +81,7 @@ func (s *Service) SaveGame() error {
 	if err != nil {
 		return err
 	}
-	err = s.GitRepository.Commit(s.generateCommitMessage())
-	if err != nil {
-		return err
-	}
-	return nil
+	return s.GitRepository.Commit(s.generateCommitMessage())
 }
 
 func (s *Service) generateCommitMessage() string {

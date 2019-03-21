@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"log"
 	"os/exec"
 	"os/user"
 	"path"
@@ -42,7 +43,10 @@ type GitRepository struct{}
 func (g *GitRepository) Checkout(branch string) error {
 	cmd := exec.Command("git", "checkout", "-B", branch)
 	cmd.Dir = GameSaveRoot
-	err := cmd.Run()
+	output, err := cmd.CombinedOutput()
+	if err == nil {
+		log.Println(string(output))
+	}
 	return err
 }
 
@@ -50,19 +54,28 @@ func (g *GitRepository) Checkout(branch string) error {
 func (g *GitRepository) Commit(message string) error {
 	cmd := exec.Command("git", "add", ".")
 	cmd.Dir = GameSaveRoot
-	err := cmd.Run()
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return err
 	}
+	log.Println(string(output))
 	cmd = exec.Command("git", "commit", "-m", message)
 	cmd.Dir = GameSaveRoot
-	return cmd.Run()
+	output, err = cmd.CombinedOutput()
+	if err == nil {
+		log.Println(string(output))
+	}
+	return err
 }
 
 // Clone download repository from remote on repoURL
 func (g *GitRepository) Clone(repoURL string) error {
 	cmd := exec.Command("git", "clone", repoURL, GameSaveRoot)
-	return cmd.Run()
+	output, err := cmd.CombinedOutput()
+	if err == nil {
+		log.Println(string(output))
+	}
+	return err
 }
 
 // FetchBranch fetch specific branch from remote
@@ -72,7 +85,11 @@ func (g *GitRepository) FetchBranch(branch string) error {
 		fmt.Sprintf("%s:%s", branch, branch),
 	)
 	cmd.Dir = GameSaveRoot
-	return cmd.Run()
+	output, err := cmd.CombinedOutput()
+	if err == nil {
+		log.Println(string(output))
+	}
+	return err
 }
 
 // GetCurrentBranch get current active branch
@@ -105,7 +122,11 @@ func (g *GitRepository) Pull(branch string) error {
 	}
 	cmd := exec.Command("git", "pull", "origin", branch)
 	cmd.Dir = GameSaveRoot
-	return cmd.Run()
+	output, err := cmd.CombinedOutput()
+	if err == nil {
+		log.Println(string(output))
+	}
+	return err
 }
 
 // Push upload repository to remote on specific branch
@@ -116,12 +137,20 @@ func (g *GitRepository) Push(branch string) error {
 	}
 	cmd := exec.Command("git", "push", "origin", branch)
 	cmd.Dir = GameSaveRoot
-	return cmd.Run()
+	output, err := cmd.CombinedOutput()
+	if err == nil {
+		log.Println(string(output))
+	}
+	return err
 }
 
 // SetRepoURL set URL of Git repository
 func (g *GitRepository) SetRepoURL(repoURL string) error {
 	cmd := exec.Command("git", "remote", "set-url", "origin", repoURL)
 	cmd.Dir = GameSaveRoot
-	return cmd.Run()
+	output, err := cmd.CombinedOutput()
+	if err == nil {
+		log.Println(string(output))
+	}
+	return err
 }
