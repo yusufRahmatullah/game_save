@@ -2,8 +2,8 @@ package repository
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 )
@@ -29,7 +29,7 @@ func (rep *OSRepository) Copy(src, dst string) error {
 	cmd := exec.Command("cp", "-rf", src, dst)
 	output, err := cmd.CombinedOutput()
 	if err == nil {
-		log.Println(string(output))
+		fmt.Println(string(output))
 	}
 	return err
 }
@@ -40,12 +40,12 @@ func (rep *OSRepository) GetConfig(key string) string {
 	var config map[string]string
 	data, err := ioutil.ReadFile(LocalConfig)
 	if err != nil {
-		log.Printf("Error on get config: %v", err)
+		fmt.Printf("Error on get config: %v", err)
 		return ""
 	}
 	err = json.Unmarshal(data, &config)
 	if err != nil {
-		log.Printf("Error on get config: %v", err)
+		fmt.Printf("Error on get config: %v", err)
 		return ""
 	}
 	if val, ok := config[key]; ok {

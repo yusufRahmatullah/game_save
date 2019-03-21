@@ -19,7 +19,7 @@ type IService interface {
 	AddConfig(key, value string) error
 	InitGitRepo(repoURL string) error
 	LoadGame() error
-	LoadGameSave() error
+	PrepareGame() error
 	SaveGame() error
 }
 
@@ -39,8 +39,18 @@ func (s *Service) InitGitRepo(repoURL string) error {
 	return s.GitRepository.Clone(repoURL)
 }
 
-// LoadGame prepare Git to change the current branch to game name
+// LoadGame load game's save data by copying the save data
+// from git repository to save path
 func (s *Service) LoadGame() error {
+	savePath := s.OSRepository.GetConfig("save_path")
+	if savePath == "" {
+		return ErrSavePathEmpty
+	}
+	return s.OSRepository.Copy(repository.GameSaveRoot, savePath)
+}
+
+// PrepareGame prepare Git to change the current branch to game name
+func (s *Service) PrepareGame() error {
 	gameName := s.OSRepository.GetConfig("game_name")
 	if gameName == "" {
 		return ErrGameNameEmpty
@@ -50,16 +60,6 @@ func (s *Service) LoadGame() error {
 		return err
 	}
 	return s.GitRepository.Pull(gameName)
-}
-
-// LoadGameSave load game's save data by copying the save data
-// from git repository to save path
-func (s *Service) LoadGameSave() error {
-	savePath := s.OSRepository.GetConfig("save_path")
-	if savePath == "" {
-		return ErrSavePathEmpty
-	}
-	return s.OSRepository.Copy(repository.GameSaveRoot, savePath)
 }
 
 // SaveGame persists game's save data by copying save data

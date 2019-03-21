@@ -7,7 +7,9 @@ import (
 
 func TestRoot(t *testing.T) {
 	t.Run("show help on empty command", func(t *testing.T) {
-		root := NewRootCommand(nil, nil)
+		serv := newServiceMock()
+		serv.InitGitRepo("")
+		root := NewRootCommand(serv)
 		buffer := bytes.Buffer{}
 		helpBuffer := bytes.Buffer{}
 		got := root.Parse([]string{""}, &buffer)

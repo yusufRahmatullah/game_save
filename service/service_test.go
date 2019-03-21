@@ -30,7 +30,7 @@ func TestLoadGame(t *testing.T) {
 	t.Run("load game in normal condition", func(t *testing.T) {
 		service := initService(t, gitOptionNormal)
 		service.AddConfig("game_name", "game")
-		err := service.LoadGame()
+		err := service.PrepareGame()
 		assertNotError(t, err)
 		currentBranch, _ := service.GitRepository.GetCurrentBranch()
 		assertEqual(t, currentBranch, "game")
@@ -39,7 +39,7 @@ func TestLoadGame(t *testing.T) {
 	t.Run("load game branch with game name not exist", func(t *testing.T) {
 		service := initService(t, gitOptionsBranchInvalid)
 		service.AddConfig("game_name", "game")
-		err := service.LoadGame()
+		err := service.PrepareGame()
 		assertNotError(t, err)
 		currentBranch, _ := service.GitRepository.GetCurrentBranch()
 		assertEqual(t, currentBranch, "game")
@@ -47,7 +47,7 @@ func TestLoadGame(t *testing.T) {
 
 	t.Run("load game game_name not set", func(t *testing.T) {
 		service := initService(t, gitOptionNormal)
-		err := service.LoadGame()
+		err := service.PrepareGame()
 		assertError(t, err)
 	})
 }
@@ -56,13 +56,13 @@ func TestLoadGameSave(t *testing.T) {
 	t.Run("load game save in normal condition", func(t *testing.T) {
 		service := initService(t, gitOptionNormal)
 		service.AddConfig("save_path", "./game.save")
-		err := service.LoadGameSave()
+		err := service.LoadGame()
 		assertNotError(t, err)
 	})
 
 	t.Run("save_path not set", func(t *testing.T) {
 		service := initService(t, gitOptionNormal)
-		err := service.LoadGameSave()
+		err := service.LoadGame()
 		assertError(t, err)
 	})
 }

@@ -5,21 +5,24 @@ import (
 	"io"
 	"os"
 
+	"github.com/yusufRahmatullah/game_save/service"
+
 	"github.com/spf13/cobra"
-	"github.com/yusufRahmatullah/game_save/repository"
+)
+
+var (
+	rootService service.IService
 )
 
 // RootCommand handles arguments and execute corresponding
-// sub-commands to interact with repositories
+// sub-commands to interact with service
 type RootCommand struct {
-	rootCmd       *cobra.Command
-	OSRepository  repository.IOSRepository
-	GitRepository repository.IGitRepository
+	rootCmd *cobra.Command
 }
 
 // NewRootCommand instantiate new RootCommand
 // requires OSRepository and GitRepository
-func NewRootCommand(osRepository repository.IOSRepository, gitRepository repository.IGitRepository) *RootCommand {
+func NewRootCommand(serv service.IService) *RootCommand {
 	root := RootCommand{
 		rootCmd: &cobra.Command{
 			Use:   "gamesave [global-flags] <command> [local-flags] <arguments>",
@@ -28,10 +31,13 @@ func NewRootCommand(osRepository repository.IOSRepository, gitRepository reposit
 					specifying game name as folder in git
 					repository`,
 		},
-		OSRepository:  osRepository,
-		GitRepository: gitRepository,
 	}
+	rootService = serv
 	root.rootCmd.AddCommand(addCommand)
+	root.rootCmd.AddCommand(initCommand)
+	root.rootCmd.AddCommand(loadCommand)
+	root.rootCmd.AddCommand(saveCommand)
+	root.rootCmd.AddCommand(setPathCommand)
 	return &root
 }
 
