@@ -2,6 +2,7 @@ package repository
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -29,7 +30,9 @@ func (rep *OSRepository) Copy(src, dst string) error {
 	cmd := exec.Command("cp", "-rf", src, dst)
 	output, err := cmd.CombinedOutput()
 	if err == nil {
-		fmt.Println(string(output))
+		fmt.Print(string(output))
+	} else {
+		err = errors.New(string(output))
 	}
 	return err
 }

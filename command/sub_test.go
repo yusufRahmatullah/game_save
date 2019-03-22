@@ -93,6 +93,22 @@ func TestSetPath(t *testing.T) {
 	})
 }
 
+func TestVersion(t *testing.T) {
+	t.Run("return valid version", func(t *testing.T) {
+		t.Helper()
+		serv := newServiceMock()
+		root := NewRootCommand(serv)
+		mockVersion := "0.1.0"
+		root.SetVersion(mockVersion)
+		var buffer bytes.Buffer
+		err := root.Parse([]string{"version"}, &buffer)
+
+		if got := buffer.String(); err != nil || got != mockVersion {
+			t.Errorf("Shouldn't show error. Error: %v, got: '%s', want: '%s'", err, got, mockVersion)
+		}
+	})
+}
+
 func testCallInit(t *testing.T, shouldPass bool, testType string, commandAndArgs ...string) {
 	t.Helper()
 	serv := newServiceMock()

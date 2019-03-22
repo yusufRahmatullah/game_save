@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	appVersion  string
 	rootService service.IService
 )
 
@@ -38,6 +39,7 @@ func NewRootCommand(serv service.IService) *RootCommand {
 	root.rootCmd.AddCommand(loadCommand)
 	root.rootCmd.AddCommand(saveCommand)
 	root.rootCmd.AddCommand(setPathCommand)
+	root.rootCmd.AddCommand(versionCommand)
 	return &root
 }
 
@@ -56,4 +58,9 @@ func (c *RootCommand) Run() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+// SetVersion set RootComand verison
+func (c *RootCommand) SetVersion(version string) {
+	appVersion = version
 }

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
 	"os/user"
@@ -44,7 +45,9 @@ func (g *GitRepository) Checkout(branch string) error {
 	cmd.Dir = GameSaveRoot
 	output, err := cmd.CombinedOutput()
 	if err == nil {
-		fmt.Println(string(output))
+		fmt.Print(string(output))
+	} else {
+		err = errors.New(string(output))
 	}
 	return err
 }
@@ -55,14 +58,16 @@ func (g *GitRepository) Commit(message string) error {
 	cmd.Dir = GameSaveRoot
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return err
+		return errors.New(string(output))
 	}
-	fmt.Println(string(output))
+	fmt.Print(string(output))
 	cmd = exec.Command("git", "commit", "-m", message)
 	cmd.Dir = GameSaveRoot
 	output, err = cmd.CombinedOutput()
 	if err == nil {
-		fmt.Println(string(output))
+		fmt.Print(string(output))
+	} else {
+		err = errors.New(string(output))
 	}
 	return err
 }
@@ -72,7 +77,9 @@ func (g *GitRepository) Clone(repoURL string) error {
 	cmd := exec.Command("git", "clone", repoURL, GameSaveRoot)
 	output, err := cmd.CombinedOutput()
 	if err == nil {
-		fmt.Println(string(output))
+		fmt.Print(string(output))
+	} else {
+		err = errors.New(string(output))
 	}
 	return err
 }
@@ -86,7 +93,9 @@ func (g *GitRepository) FetchBranch(branch string) error {
 	cmd.Dir = GameSaveRoot
 	output, err := cmd.CombinedOutput()
 	if err == nil {
-		fmt.Println(string(output))
+		fmt.Print(string(output))
+	} else {
+		err = errors.New(string(output))
 	}
 	return err
 }
@@ -123,7 +132,9 @@ func (g *GitRepository) Pull(branch string) error {
 	cmd.Dir = GameSaveRoot
 	output, err := cmd.CombinedOutput()
 	if err == nil {
-		fmt.Println(string(output))
+		fmt.Print(string(output))
+	} else {
+		err = errors.New(string(output))
 	}
 	return err
 }
@@ -138,7 +149,9 @@ func (g *GitRepository) Push(branch string) error {
 	cmd.Dir = GameSaveRoot
 	output, err := cmd.CombinedOutput()
 	if err == nil {
-		fmt.Println(string(output))
+		fmt.Print(string(output))
+	} else {
+		err = errors.New(string(output))
 	}
 	return err
 }
@@ -149,7 +162,9 @@ func (g *GitRepository) SetRepoURL(repoURL string) error {
 	cmd.Dir = GameSaveRoot
 	output, err := cmd.CombinedOutput()
 	if err == nil {
-		fmt.Println(string(output))
+		fmt.Print(string(output))
+	} else {
+		err = errors.New(string(output))
 	}
 	return err
 }

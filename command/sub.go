@@ -71,3 +71,14 @@ var setPathCommand = &cobra.Command{
 		return rootService.AddConfig("save_path", savePath)
 	},
 }
+
+var versionCommand = &cobra.Command{
+	Use:   "version",
+	Short: "Show gamesave version",
+	Args:  cobra.NoArgs,
+	Run: func(cmd *cobra.Command, args []string) {
+		out := cmd.OutOrStdout()
+		out.Write([]byte(appVersion))
+		fmt.Println("")
+	},
+}

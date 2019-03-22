@@ -6,6 +6,11 @@ import (
 	"github.com/yusufRahmatullah/game_save/service"
 )
 
+const (
+	// AppVersion is the version of GameSave
+	AppVersion = "0.1.0"
+)
+
 func main() {
 	gitRepo := repository.GitRepository{}
 	osRepo := repository.OSRepository{}
@@ -14,5 +19,6 @@ func main() {
 		OSRepository:  &osRepo,
 	}
 	root := command.NewRootCommand(&service)
+	root.SetVersion(AppVersion)
 	root.Run()
 }
